@@ -34,7 +34,7 @@ foreign import java unsafe "@interface executeQuery"
   executeQuery :: PreparedStatement -> IO ResultSet
 
 foreign import java unsafe "@interface next"
-  next :: ResultSet -> IO Bool
+  next' :: ResultSet -> IO Bool
 
 foreign import java unsafe "@interface getInt"
   getInt :: ResultSet -> String -> IO Int
@@ -71,7 +71,7 @@ class ResultRow a where
 -- Read the resultset into a list of values
 parseRows :: ResultRow a => ResultSet -> [a] -> IO [a]
 parseRows rs acc = do
-  more <- next rs
+  more <- next' rs
   if more
     then do row <- parseResultRow rs
             parseRows rs (row:acc)
